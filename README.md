@@ -18,12 +18,14 @@ No Linux/macOS builds.
 
 ### EU5 in this fork
 
-The EU5 signature targets game version 1.4.7. It removes only the achievement
-condition "not using another player's savegame" (the game then keeps achievements
-available when you load a save made by a different Steam user). The original EU5
-site no longer matches 1.4.7 and was dropped, so this fork does not bypass the
-checksum/mod check for EU5. All other achievement conditions (ironman, singleplayer,
-game rules, end date, checksum) stay as the game sets them.
+The EU5 signatures target game version 1.4.7 and restore the original tool's effect
+for EU5: every copy of the achievement eligibility check (`CanGetAchievements`, in the
+UI and in the achievement manager) reports "eligible", the achievement update always
+evaluates achievements, and the menu/lobby show achievements as available. This
+covers modified checksums (mods) and also lifts the ironman, end-date and
+"another player's savegame" conditions. The savegame-owner flag is additionally kept
+at "own save". Re-run after every game update; if a signature no longer matches, the
+tool refuses to patch.
 
 ## Install & use
 

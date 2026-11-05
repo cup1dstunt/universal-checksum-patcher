@@ -39,7 +39,37 @@
           "replace": "B3 01 90",
           "requireInFunc": true,
           "expectMatches": 1,
-          "note": "EU5 1.4.7: setter of the achievement condition 'not using another player's savegame' (ACHIEVEMENTS_CONDITION_SAVEGAME, byte +0x130 of the achievement-state singleton). movzx ebx,byte[rdx] -> mov bl,1; nop, so loading a save made by another Steam user keeps achievements eligible. Touches only this one condition. The previous can_get_achievements flag-chain site no longer matches 1.4.7."
+          "note": "EU5 1.4.7: setter of the 'not using another player's savegame' flag (+0x130 of the achievement manager). movzx ebx,byte[rdx] -> mov bl,1; nop."
+        },
+        {
+          "id": "eligibility_gates",
+          "find": "80 ?? 34 01 00 00 00 75 ?? 80 ?? 39 01 00 00 01 75 ?? 80 ?? 32 01 00 00 00",
+          "patchOffset": 7,
+          "expect": "75",
+          "replace": "EB",
+          "requireInFunc": true,
+          "expectMatches": 4,
+          "note": "EU5 1.4.7: CanGetAchievements flag chain (cmp [m+0x134],0; jne eligible; cmp [m+0x139],1 ...). jne -> jmp makes every copy return eligible: in-game UI + three achievement-manager copies. Successor of the original can_get_achievements site."
+        },
+        {
+          "id": "achievement_update_gate",
+          "find": "80 BE 34 01 00 00 00 0F 84 ?? ?? ?? ?? 4C 63 AE CC 00 00 00",
+          "patchOffset": 6,
+          "expect": "00",
+          "replace": "FF",
+          "requireInFunc": true,
+          "expectMatches": 1,
+          "note": "EU5 1.4.7: achievement update skips evaluation unless eligible (cmp [rsi+0x134],0; je check). Immediate 0 -> 0xFF so the je is never taken and achievements are always evaluated."
+        },
+        {
+          "id": "ui_would_get_achievements",
+          "find": "41 57 41 56 41 54 56 57 55 53 48 83 EC 40 48 89 CE 48 8B 0D ?? ?? ?? ?? 48 8D 15 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 63 4E 6C",
+          "patchOffset": 0,
+          "expect": "41 57 41 56 41 54",
+          "replace": "B8 01 00 00 00 C3",
+          "requireInFunc": true,
+          "expectMatches": 1,
+          "note": "EU5 1.4.7: UI CanGetAchievements / GameWouldGetAchievements (menu, lobby). mov eax,1; ret."
         }
       ]
     }
