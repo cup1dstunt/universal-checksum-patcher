@@ -16,6 +16,15 @@ It does not enable the console, cheats, or achievement-disabling game rules.
 
 No Linux/macOS builds.
 
+### EU5 in this fork
+
+The EU5 signature targets game version 1.4.7. It removes only the achievement
+condition "not using another player's savegame" (the game then keeps achievements
+available when you load a save made by a different Steam user). The original EU5
+site no longer matches 1.4.7 and was dropped, so this fork does not bypass the
+checksum/mod check for EU5. All other achievement conditions (ironman, singleplayer,
+game rules, end date, checksum) stay as the game sets them.
+
 ## Install & use
 
 1. Download `universal-checksum-patcher.exe` from Releases.

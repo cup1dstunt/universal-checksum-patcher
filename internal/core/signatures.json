@@ -32,14 +32,14 @@
     "eu5.exe": {
       "sites": [
         {
-          "id": "can_get_achievements",
-          "find": "80 ?? ?? ?? ?? ?? 00 75 ?? 80 ?? ?? ?? ?? ?? 00 74 ?? 80 ?? ?? ?? ?? ?? 00 74 ?? 80 ?? ?? ?? ?? ?? 00",
-          "patchOffset": 7,
-          "expect": "75",
-          "replace": "EB",
+          "id": "savegame_owner_flag",
+          "find": "53 48 83 EC 40 0F B6 1A 48 8B 05 ?? ?? ?? ?? 48 85 C0 0F 85",
+          "patchOffset": 5,
+          "expect": "0F B6 1A",
+          "replace": "B3 01 90",
           "requireInFunc": true,
           "expectMatches": 1,
-          "note": "CanGetAchievements game-state flag-chain (cmp byte[obj+off],0; jXX). First conditional jne -> jmp forces the function to always return al=1 (eligible), bypassing every flag and the checksum vcall."
+          "note": "EU5 1.4.7: setter of the achievement condition 'not using another player's savegame' (ACHIEVEMENTS_CONDITION_SAVEGAME, byte +0x130 of the achievement-state singleton). movzx ebx,byte[rdx] -> mov bl,1; nop, so loading a save made by another Steam user keeps achievements eligible. Touches only this one condition. The previous can_get_achievements flag-chain site no longer matches 1.4.7."
         }
       ]
     }
